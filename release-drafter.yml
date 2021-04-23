@@ -1,0 +1,95 @@
+name-template: 'Release $RESOLVED_VERSION 💰'
+tag-template: 'v$RESOLVED_VERSION'
+template: |
+  ## Changes
+
+  $CHANGES
+
+# label to release category mapping
+categories:
+  - title: '❌ Breaking Changes (Major)'
+    label: 'breaking'
+  - title: '🚀 New Features / Enhancements (Minor)'
+    label: 'enhancement'
+  - title: '🐛 Bug Fixes  (Patch)'
+    label: 'bug'
+  - title: '🧰 Maintenance (Patch)'
+    label: 'maintenance'
+  - title: '📄 Documentation (Patch)'
+    label: 'documentation'
+  - title: '🔗 Dependency Updates (Patch)'
+    label: 'dependencies'
+  - title: '🔒 Security Updates (Patch)'
+    label: 'security'
+
+# release line template
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+
+# versioning 
+version-resolver:
+  major:
+    labels:
+      - 'breaking'
+  minor:
+    labels:
+      - 'enhancement'
+  patch:
+    labels:
+      - 'bug'
+      - 'documentation'
+      - 'dependencies'
+      - 'maintenance'
+      - 'security'
+
+# Auto labeler configs
+autolabeler:
+  # Breaking
+  - label: 'breaking'
+    title:
+      - '/breaking/i'
+    body:
+      - '/breaking/i'
+  # Enhancements
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/i'
+   # Maintenance
+  - label: 'maintenance'
+    title:
+      - '/maintenance/i'
+    body:
+      - '/maintenance/i'
+  # Documentation
+  - label: 'documentation'
+    files:
+      - '*.md'
+      - '*.doc'
+      - '*.docx'
+      - '*.txt'
+    branch:
+      - '/docs{0,1}\/.+/i'
+   # Dependency Updates
+  - label: 'dependencies'
+    files:
+      - 'packages.config'
+      - 'package.json'
+  # Bugs
+  - label: 'bug'
+    branch:
+      - '/bug\/.+/i'
+      - '/bugfix\/.+/i'
+    title:
+      - '/fix/i'
+  # Security
+  - label: 'security'
+    title:
+      - '/security/i'
+      - '/cve/i'
+    body:
+      - '/security/i'
+      - '/cve/i'
+  
+
+exclude-labels:
+  - 'skip-changelog'
